@@ -1,0 +1,41 @@
+[MUSIC] So what's the data model here? So there's four types involved here and one is the atom which is just a primitive,
+an integer, string and so on. And then there's three
+different collection types. All right, the first is a tuple
+which is a sequence of fields, and every field can be of any type,
+they need not be atoms. Then there's a bag which is
+a collection of tuples, always tuples. But those tuples need not be the same
+type, so this is different than a table, different than a relation. And it's a bag not a set and I can ask you what's the difference
+between a bag and a set? Well, a bag allows duplicates. And then the third type is a map, which is a little confusing when
+we're talking about MapReduce, but this is a dictionary in Python, string
+literal keys mapped to any other type. Okay, so let's look at an example of this. What is this thing? Well, depends on my notation, I guess. But assuming that you don't mind my
+angle brackets referring to tuple, then you can see that this outer thing
+is a tuple and it has three fields. It has a integer, which is just an atom, and then it has this thing,
+which is a bag. The curly braces I'm gonna
+use to indicate bag. And then it's got this thing. Excuse me. Which is a map, a dictionary, that has just one element in it, mapping
+the key apache to the value search. Okay, so let's name these guys F1,
+F2, and F3, and we'll point out in a couple of slides
+where those names can come from. There's a few different
+places they can come from and I'll point out one of
+those sources soon but right now just assume that we have them. Okay, so let's consider these
+expressions over this type. So we can write $0. And what that means is, give me
+the first field in the tuple, okay? So in this case it's just the number 1. We can also access it by name,
+so if we access F2 that will give us the second field just
+because we gave it that explicit name. There's nothing magic about F,
+nothing magic about 2. And that'll give us a bag
+with these values in it. By the way, we should say what
+are the elements of this bag? Well, they're tuples
+with two integers each. Okay.
+Now you can also access F2 to give me, so what does this expression do? Well F2 gives me the bag. And then you can write .$0 and
+I don't love this notation, it's a bit of an abuse of notation,
+but what it means is for every element of the bag,
+project out the first element. And so this will give me another bag but
+it only has 2 and 4 and 5. It has the zeroth element of every tuple. Okay. Then you've got this magic hash symbol
+here which means find me the value associated with the key
+I'm about to provide. So look at F3 which is the third field and
+hash into it and give me the key apache. If it's not a map you're going to get
+an error, but in this case it is a map so what gets returned is the atom search. Okay, and you can also write functions,
+you can say sum up all of these values. And this expression is
+the same one we saw here, which will be a sequence of integers. And so that'll give you 2+4+5. Okay, and there's a few other ways
+to sort of manipulate these things, but the first thing to notice is
+that this is non relational, right? You've got this nested data structure and
+you've got a few different data types. [MUSIC]

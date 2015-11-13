@@ -1,0 +1,81 @@
+[MUSIC] So the concepts used in Spark are exactly
+those concepts you've been studying in the context of other systems and you can
+apply all that knowledge you learned in order to understand what's
+going on inside of Spark. But there is some terminology that
+you should be familiar with that is specifically associated with Spark. One such term is the Resilient
+Distributed Dataset, the RDD. This is a distributed collection of key
+value pairs, which should sound familiar, because it's exactly the same data
+model that you used in Map Reduce and Hadoop, and is very similar to the data
+model used even in a relational database. The difference between
+a key value pair and a record, potentially with a primary key
+defined, is not terribly significant. The other key distinction about an RDD is
+that it can be persistent in memory across tasks. So unlike Map Reduce where we wrote
+everything out to disk after every task for full tolerance reasons,
+these can hang out in memory and you can apply multiple tasks to them
+across the durations, even across jobs. And that in memory caching
+is really the key feature. And we'll talk about that
+again in just a minute or two. So working with these RDDs, there's really
+two kinds of actions you can take and this is Spark terminology again. There's transformations and
+then there's actions. Transformations are the operators that
+we've been discussing, so this is the map, and the reduce, and the filter, and
+the join, and the coat group and so on. And they take in an RDD or
+more than one RDD and produce another RDD. Actions on the other hand take RDD and
+produce a value, extracting a value from the RDD into
+the host language, Python or Scholar and Java, and they can be manipulated
+using that programming language. So let's look at an example. The text file is read from some path and saved in a text file variable
+that creates an RDD. We apply a transformation to it, in this case the filter transformation
+that takes in another function. This lambda,
+if you're not familiar with that term, that's how you spell
+an anonymous function in Python. Important thing is that this function
+takes one argument, the line and then if that line contains the word spark,
+if spark is in line, then this expression turns the value to
+true, otherwise it evaluates to false. Only those records for which this whole
+function evaluates to true are saved into the resulting data with lines sparks, and
+that's why it's named lines with spark. And then finally,
+the action taken is perhaps to count the number of records in linesWithSpark,
+which in this case, I guess, is 74, or to take the first record
+out from this data set. So these things actually return values,
+and one evaluation principle that Spark uses is lazy evaluation,
+which means that transformations aren't actually executed as soon as
+that line of code is encountered. Rather it waits until an actual value must
+be returned to the host language before it stacks up all the transformation
+required to compute that value, potentially optimizes them and then runs
+them through and extracts the value. Okay. So there's a bunch of RDD operations. We've seen that you can program
+directly in Map Reduce. You have Map and you have Reduce calls
+that behave in the same ways that they do in Map Reduce and Hadoop. But you also have these other operators
+you can do that look a little bit more like what you'd find in
+a relational algebra based system. Including Pig or even more generally, I shouldn't say more generally,
+or a database system. Okay so you can just write a program
+in a variety of different ways, all again Spark but all of these
+concepts you've already learned. So let's remind ourselves of some of the
+important weaknesses of MapReduce/Hadoop. The first of which is that Map and Reduce
+functions have to be written by hand, so this could become tedious and
+error prone. And this problem was recognized
+by people very early on, and systems like HIVE and Pig were
+designed to address it, in part, so you could program at a higher level model. In the case of HIVE, it was SQL. In the case of Pig, it was this relational algebra based
+language that we explored and those expressions would generate the distributed
+computation in MapReduce itself. The second problem, or a second problem, was that there are no
+indexes available for efficient lookup. So if you only wanted to find a particular
+set of records in a very, very large MapReduce data set, you had no choice but
+to scan the entire data set into memory. Apply some Map function that identified
+the record you were interested in and then passed those on to the next task. And this problem was also
+recognized pretty early on and addressed by attaching a key value
+store into the Hadoop ecosystem and H/base which is based on this. System called BigTable from Google
+is perhaps one of the most well known examples of this. So the third problem, though, is that
+every step in a MapReduce work flow writes its entire output to disk for
+fault tolerance reasons. And so this is good for
+fault tolerance, but it's absolutely abysmal for performance. And so this third problem is really
+what Spark was designed to fix. The first problem and the second problem
+were addressed by other systems. But the raw performance of Hadoop,
+primarily because of the writing everything out to disk,
+perhaps not exclusively because of that, was really seen as fatal and so
+bringing everything into memory and operating on large data sets in memory
+was the key design goal of Spark itself. So you can ask,
+does this optimization matter? The answer is absolutely. Right?
+So this first iteration of this task, the times are approximately the same. One is 80 seconds. Spark is 80 seconds and
+Hadoop is 110 seconds. But then as the computation proceeds every
+other iteration of Hadoop has to reread the same data set over and over and over
+again, so the time just goes linearly up. Spark only has to read it that first time. And so all the other computation is able
+to, all the other iterations are able to operate on it directly in memory and
+not take any additional time, and so the savings can be enormous, especially
+for these repeated computations. [MUSIC]

@@ -1,0 +1,59 @@
+[MUSIC] So we can also measure the connectivity
+coefficient of a graph as a structural analysis task. So this is the minimum number
+of vertices you need to remove that will disconnect the graph. And so you can think of this intuitively
+as a sense of the measure of the fragility of the graph, right? How much redundancy is built into it? So if you're designing a network and it
+turns out the connectivity coefficient of the graph is one, that means that if one,
+potentially if one machine goes down you could partition the network
+where nobody can communicate. Okay?
+So if you're an advertiser you might be interested in a connectivity
+coefficient of a graph. If you're trying to reach as many people
+as possible, it could be that if a few people don't pay attention to the ads
+then a whole bunch of other people won't send a message to viral advertising or
+social media advertising, okay? And so remember in the cap theorem
+that we discuss in the NoSQL lectures, p was partitioning, right? So this was the,
+if your system becomes partitioned, if your network becomes partitioned,
+can the systems still function? And so connectivity coefficient could be a
+measure to help you estimate how likely it is that your network's
+gonna be partitioned. Okay so what is the connectivity
+coefficient of this graph? Well it depends on exactly what
+we mean by connectivity first. So we can say that two vertices, x and y, are strongly connected if x is reachable
+from y and y is reachable from x. Okay we might say that they're just
+connected if x is reachable from y or y is reachable from x. And so this is sort of equivalent to
+ignoring the directionality of the edges. So if we just assume that
+everything is undirected, then we'll be using the second definition. So let's assume that for a second,
+let's assume we just mean connected here. Well look if we don't care about
+direction of traversing then if we remove e, is the graph disconnected? No, because you can still reach everything
+through this other edge up there. And so, the only node here that appears
+and not be redundant here is b. And so, if you remove b though,
+you'll have two partitions in the network, a and f, and all the other ones here. So, the connectivity coefficient of
+this graph is one because we can find a vertex that if we were to move it,
+it would be a partition network. Okay. And we already discussed why
+you might wanna compute this. So the connectivity coefficient is
+a measure of the graph itself and doesn't really give us a way to understand
+the relative importance of an individual vertex. And so for this purpose there's been
+various notions of centrality defined. So one is the Closeness Centrality
+of a vertex, which is the average length of all
+the shortest paths that pass through it. All right, so intuitively you can maybe compare
+this with the diameter of the graph. If the diameter is long, and the average
+length of all the shortest paths that go through a particular vertex is short. The it's not part of the diameter of
+the paths that define the diameter of the graph and so some census may be
+less central or less important, okay? So another is the between, maybe more
+common is the Betweeness Centrality of a vertex and this is the fraction
+of all the shortest paths in the whole graph that
+pass through this vertex. So if you need to go,
+all roads lead through Rome. So if you need to go from Seattle
+to Atlanta in the U.S., then perhaps all paths go through one
+of two different major highways or one or two cities, the northern route and
+the southern or something. And so the between this centrality of
+these two intermediate hubs is high. And so if you think about
+a public transportation system where all trains lead into some
+central hub and then go out again, that central hub will have
+a high betweeness centrality. Because the shortest path to get from
+point A to point B always goes through this one central vertex, okay? So what is the Betweeness Centrality
+of vertex e in this case? Well there's a shortest path
+a to b to d to c that we found, the shortest path made
+to c goes through there. And the shortest path from a to g, a b e g is three. So if you sort of add all these up you'll
+see that e is only involved in a, b, g, g and then a bunch of ones that
+are rooted in e itself, e to c and e to g. So the betweenness
+centrality of e is three. Or sorry, there are three divided by the total number
+of shortest paths in the graph. It's a fraction. [MUSIC]

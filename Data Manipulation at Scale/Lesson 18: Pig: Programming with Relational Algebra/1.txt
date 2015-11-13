@@ -1,0 +1,67 @@
+[MUSIC] Okay, so I want to talk a little
+about the system Pig, and there's a couple reasons for this. One is it represents this
+language layer on top of MapReduce which I think is pretty
+important as I mentioned before. And it also represents a more direct
+interface to relational algebra, which I've argued is really just
+the important abstractions from databases. SQL happens to be sort of intergalactic
+data-speak and is the universal language for programming databases and
+manipulating data in databases. But really the secret sauce and the
+technology that makes it effective is this underlying formulas in
+the relational algebra. And Pig and a few other systems sort
+of exposes as a first class citizen. And it's not necessarily
+the only way to do it or necessarily the better way to do it. But, since you can see
+the relational algebra directly, I think it's a nice thing
+to be familiar with, okay. And it also, I think makes a point that you can cherry
+pick a little bit what futures you bring. So while it's very obviously inspired
+by relational algebra, and, of course, if you look at the sort of people
+that developed it you can see why, it definitely changes some things
+about the relational model. And I think that's an important point,
+too, is that we can use this relational algebra abstraction independently of
+some of the systems that it came from. We can make whatever changes we need,
+and we can keep what we like, and throw out what we don't like. And so I want you to sort of put your
+relational algebra goggles on, and see the world in terms
+of relational algebra. I think it's pretty effective for
+working with not just data in general, but especially big data, and
+the reason of very scalable algorithms. Okay. So fine.
+So what is Pig? So Pig is a Engine for
+executing programs on top of Hadoop. Okay?
+So you're going to write a program in Pig, and it's going to generate a sequence of
+map produced jobs that implement that program, okay? And the language here is called Pig Latin
+and it's an Apache open source project and you can read more about it. And so why bother doing this? Well if you're a MapReduce programmer, you're happy with MapReduce,
+why would you bother doing this? Well, suppose you have
+data in one file and data from websites, sorry user data in one
+file and website data in In another, and you need to find the top most visited
+sites by user in a particular age range. And so if you're thinking in terms of SQL
+you can probably think about how do you express this task as a query. And here's a pictorial representation of
+it that sort of shows a data flow here. We're gonna load users,
+we'll load load the pages, we'll filter by age, do some kind of
+join on name group, count up the clicks, order by clicks, and
+then take the top five. This may or may not be the way you
+draw it on the whiteboard if you were to express it yourself but it's a
+reasonable way of describing the problem. Well, in MapReduce there's 170 lines
+of code, and at least in one example coming from the papers here,
+it took someone four hours to write it. These kind of metrics of how long,
+development time, are never too compelling because it kind of depends on their
+background and their skill set and so on. But still, a decent amount of time. While the same program is in Pig Latin,
+it's just nine lines of code. It takes, you know, at least in this case
+15 minutes to write and further, you know, does sort of capture some of this more
+abstract description of what's going on. Now that's a little bit contrived
+because these boxes, obviously, correspond to sort of
+particular pig commands. But I'd argue that this even
+people who don't know Pig, if they were to ask what sort of tasks
+were involved in evaluating this English question, they might come up
+with something along these lines, and they might not say join, but
+some of these steps would be present. So I think you can say that it
+captures a bit of the natural language description of the task, okay. You may not buy that, okay. Fine, so here's what it looks like. Load the user data according
+to a particular schema, filter the user database on the age range. Load the page's data. Perform a join. Group.
+And you say, well for each group, count the number of clicks,
+and we'll talk, this one probably looks the least
+like relational algebra. And we'll talk about it. And then sort the thing. And then just take the top five. And store that result into a new file. Okay?
+And so the point here is that you can also think oh boy I can
+write all this in Python, right? That would be much easier,
+why do I need to use this new language. Well the point is that each one of these
+steps, well not actually not each one. Groups of these steps correspond
+to individual MapReduce jobs. Which means they scale really,
+really well. Right?
+It doesn't matter how big your user's table is and it doesn't matter
+how big your pages table is. This program will work. [MUSIC]

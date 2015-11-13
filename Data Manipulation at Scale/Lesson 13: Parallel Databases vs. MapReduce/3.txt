@@ -1,0 +1,70 @@
+[MUSIC] So remember where this is our query,
+orders and line items, and this is the plan
+that we're going to do. We're gonna select some orders and
+then join the orders with the items. So how this starts is these
+parallel processing units called amps in teradata terms,
+will each contain a piece of the data, a chunk of the data, and the chunk was
+defined sort of randomly by hashing. And so they all in parallel should
+begin to scan their individual chunk. And then they'll all in parallel apply the
+filtering condition to throw out certain records that they don't want. And then they'll all in parallel hash
+on the, actually this isn't right, this should be hash on the order ID,
+not the item ID. So this is the join key, right,
+we're going to join on order. Then the all in parallel has on
+the join attribute, the order ID, and that will shuffle it for lack of
+a better term, to another set of amps. Perhaps the same set of amps, but
+typically another set of amps. That will do the next step,
+actually compute the join. And so this should look a lot
+like a map reduce job, right? You've got a map function that's scanning
+and selecting, and actually then hashing, and then we've got a reduce function
+coming up to actually produce the join. And for the other relation,
+the same thing happens. You scan the items and then hash on,
+again this is order, order, order. Right, so you're scanning the,
+selecting on the orders and just scanning on the items and then both are
+hashed on the appropriate join attribute. And lo and behold, all the items and all
+the orders that correspond to this same order ID, to the same join attribute,
+the same join key, end up on the same machine and
+you can actually process the join. Just like the MapReduce
+example example we saw. So then at the end of these
+two steps that I've shown you, AMP 4 will have all the orders and all the line items where hash of order,
+goodness, equals 1. And this AMP 5 will
+have all the orders and line items where hash of order equals 2. And this one will have all the orders and
+line items where hashing order equals 3. And now it has enough
+information to individually and in parallel finish the join and
+actually produce the result. And all these other orders as well. All right, so the point is that the same
+machinery already exists in these parallel databases. And in MapReduce,
+if you're interested in doing a join, you're sort of implementing this yourself. And so this observation was not lost on
+people that, hey, it might be nice if there was sort of a standard way
+of doing join in MapReduce and we didn't have to sort of
+rewrite it ourselves every time. And in fact, there's libraries on
+top of MapReduce that do this. And so there's a library called Pig,
+from Yahoo, that I encourage you to check out that is
+recognizably relational algebra, right? There are operators called join. There are operators called group buy. It does have a bit of a funny data model
+where you're allowed to have kind of complicated nesting, as opposed to just
+straight tubal straight relations, but the relational algebra is there. And in fact this is sort of one of
+the points I want to make is that it's important to sort of be able to
+modularized the concepts that come out of various communities and
+especially databases. It tends to be true that
+it's kind of all or nothing. If you're interested in using databases,
+well then, you have to take everything, you have to take the whole package,
+you know, it's all or nothing. But increasingly what you're finding is
+that these concepts are leaking out into other systems, which is why I'm really emphasizing
+this relation algebra piece a lot. Is that you can use these concepts
+independently of buying into a strict relational model, and certainly not a strict adherence
+to a particular implementation of it. Now, another system, called HIVE,
+is literally SQL on top of Hadoop. So one step even higher. Instead of just stopping at
+the relational algebra level, it actually provides a SQL interface. Impala is a more recent system from
+Cloudera I should mention here. Cloudera, by the way, is a company that
+has aligned themselves pretty closely with the Hadoop stack, and so they have
+their own fork of the Hadoop system and a bunch of great tools for
+working with that ecosystem. And Impala's a new system that they
+produced that provides SQL over HDFS and actually uses a lot of
+the code from the HIVE system. Cascading is another system that's
+maybe a little bit less common, but it's also very recognized
+relational algebra. The Dryad system I mentioned has nothing
+to do with MapReduce directly, except for a similar motivation, but it very
+obviously has relational algebra there. The Clustera system I mentioned, it's a
+more research project, and it's not clear to me that the code is available, but
+it's also very clearly relational algebra. So when you put your
+relational algebra goggles on, you start to see the world in this way and
+it starts to come up everywhere. So it's good to go back and
+understand those operations. [MUSIC]

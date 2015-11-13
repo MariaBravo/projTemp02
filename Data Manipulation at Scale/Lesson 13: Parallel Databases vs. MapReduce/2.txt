@@ -1,0 +1,68 @@
+[MUSIC] So recall the key idea of relational
+databases was this notion of a relational algebra where we could
+write plans like this. And that this top level language,
+called SQL, was the most common way of producing
+a relational algebra plan, right? You wrote a query in SQL and it was automatically turned into
+a relational algebra plan by the system. Okay. So, this is kinda thrown out
+the window with MapReduce, arguably in favor of flexibility and
+providing the programmer more control. But let's go back to this model for
+a bit, fine. So now we wanna evaluate these queries,
+we wanna do it in parallel now, and so there's two different terms that
+I want you to be familiar with. One is distributed query and
+one is parallel query, or distributed query processing and
+parallel query processing. And so they're both ways of sort of taking
+advantage of more competing resources for the same query, but
+they behave a little differently. So in a distributed query,
+what you're doing is taking a single, large table and distributed across
+a cluster, just like we talked about, and then you're breaking your query
+into individual pieces to operate on each of those partitions of the file. Okay, so this sounds like well, isn't that basically just
+the same thing as MapReduce. It is, except for the fact that all
+the results of those individual pieces are all sent back to the head node,
+to a single server to finish processing. So for example,
+if you're doing a count, right, and you want to count all the records
+that match some criteria. Well, if you have a very large file that's
+split across several machines these distributed query systems, Microsoft SQL
+Server in particular is an example of this, is smart enough to break the query
+into a bunch of little pieces and each of those pieces in parallel. But as they start to stream
+tuples out to be counted, they'll send them all
+back to the head node. Actually I guess that may not actually be
+true because it may be smarter to figure out that you can just count things
+in parallel and add them up. But it's not hard to construct a query
+where you have this bottleneck of sending everything back to a single server. So it's essentially, you can think of
+it as like having the map phase but not really the reduce phase. Now, parallel query, every individual operator in the relation
+to algebra is implemented in parallel. So when you're doing joins, you're
+doing joins across a bunch of nodes. When you're doing groupings
+across a bunch of nodes. And we've seen how to implement
+a relational join in MapReduce, and it's not too far off from how it's
+actually implemented inside databases. Okay.
+So if we know how to implement join that's usually the harder one. Trust me that you can implement
+the other ones that way. Well, now we have a way to
+do parallel query processing with the relational algebra. So why not do that? Well the answer is people do do that. And we'll come back to that in one second. Okay, so for a distributed query. I guess I was waving my hands a second
+ago trying to explain this when it was on the next slide. You can imagine constructing a view,
+and we've talked about views, if you don't recall what that is, it's a named query that can then
+be accessed as a single table. So we say that the sales
+table is really the union of a bunch of smaller sales tables,
+one for each month. And, in particular, you could put each one
+of these sales tables on a different disk, or even a different server altogether. Right? And then the user who's querying the sales
+table doesn't have to care about the fact that this is actually a distributed table. They don't have to go gather up
+all the results from January, and then gather up all
+the results from February, and then gather up all the results from March,
+and then put them together. That's done automatically by the system. And so this is the create table statement that we didn't talk about for constructing
+the sales table for individual March. But again, however, when you process this
+stuff in parallel that works great but when you get the results you need to
+send them all back to the single node to finish processing. And that's the limitation
+of distributed query. So it's great that you get some
+parallelism, but it can't do everything in parallel, and you can see
+this when you run performance experiments. But a true parallel query
+example would be, for example, from a system called Teradata
+which is a database company that many folks haven't heard of
+because they've been selling very, very high-end databases to very,
+very high-end customers. And so they don't sort of need
+to have much word of mouth in the popular news media. But what's happening here is
+that as every individual row is inserted into the parallel database, it will be assigned to some particular
+server using a hash function. Okay, fine. So, everything is automatically
+partitioned more or less, randomly, across the cluster. And then whenever you're
+running queries on this all the machines will access
+their data in parallel. Okay. And you can see this has a little bit of
+the flavor of how we did the relational join in MapReduce and that should
+become even more clear in a second. [MUSIC]

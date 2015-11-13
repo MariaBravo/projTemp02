@@ -1,0 +1,50 @@
+[MUSIC] Okay, so we start with the same schematic
+that we were looking at when we were talking about map reduce and scalability,
+where we take a big data set and break it into chunks and
+send those chunks to different machines. And here we are replicating this chunk
+to three different machines, which is the same thing we did before the Hadoop
+file system, for full tolerance purposes where if this machine dies, we still have
+two copies of the data to draw from. And we do this to every chunk. All right, but the two requirements we
+need to speak to here is we need to ensure high availability so that when something
+goes wrong the data's still available. And we also want to support updates
+in this context which is different than what we were talking about before. So instead of just read performance or
+full tolerance in the context of reads. We also want to make changes to this data
+now and have them propagate to both other replicas and in some cases to
+other consumers of that change. Right, there might be other blocks
+of data that are referred to the same information and I'll give
+you an example in the next slide. Okay, so, imagine a social networking application
+where people are updating their status and their friends get to, your friends
+get to see your status updates okay. And so the right operation here
+is Sue updates her own status. And the question we ask is of her friends,
+what happens? Who sees the new one,
+show see the old one? How does this status change propagate? And the answer to this question
+from a database perspective was, well look, everyone must see the new
+change, or no one does right? Either the transaction commits, and all copies of the data everywhere
+are synchronized simultaneously. And further,
+anybody attempting to read the value in an intermediate state is able to
+either read only the old value or is. Or has to wait until
+the transaction commence right? Which could be an arbitrary
+pretty long time. Deadlocks can happen,
+that's why I say arbitrarily. So that's the answer given by database. Everything's synchronous, everything must
+be updated it's either all or nothing. And the NoSQL systems
+made this observation. They said, well look, for really large
+applications we simply can't afford to wait arbitrarily long for
+this to happen, right? I mean you need status updates to
+be able to commit and respond so the user can go on to do other things. They can't sorta look
+at an hour glass while the synchronization is still occurring. And then, further the observation is,
+well, maybe it doesn't matter anyway. I mean, is it really that important,
+that here, if Sue's friend Joe sees the new status while
+Kai still sees the old status? Maybe who cares, right? As long as Kai eventually sees the new
+status, maybe that's good enough okay? So these observations suggested
+moving in a different area of the design space in
+sort of high scalability, high availability, and consistency,
+application consistency. Last base of systems started to be
+associated with kind of anti-database, so like a very different
+approach than databases did. So then term NoSQL came into play. It's unfortunate that the name
+that stuck was no sequel, because it doesn't have
+anything to do with SQL. It has more to do with the transaction
+processing side of databases which is not all that relevant for SQL. The model of transactions it
+sequences reads and writes, nothing to do with a query language. But, that's what stuck. i don't mean to say the term, NoSQL,
+only suggests these transaction models, it also suggests a sort of a weaker
+data model, and so on, and we'll talk a little more about that. But I want this point to come across, because this is one of the key ideas,
+okay.

@@ -1,0 +1,56 @@
+[MUSIC] Okay, so backing up one step. You still have millions of documents, you still distribute them
+across the k computers. You still provide
+a function that would map each document into a set
+of word frequency pairs. But then now what do you do? You've got this big distributive
+set across your cluster, across a lot of computers. And you need to collate all that
+information in to get the one histogram that you're looking for. Okay.
+So you don't want a bunch of little histogram. You want one big histogram. And the goal here, in order to produce
+that one big histogram, you'll need to make sure that a single computer has
+access to every occurrence of some word. Of the word it's gonna produce. So it doesn't have to require any
+more communication with anybody else. You're trying to arrange for the fact that all occurrences of the word
+parliament appears on a single computer so that it has enough jurisdiction to
+count them up and produce the result. It doesn't have to go ask anybody else for
+input any further. So how do we arrange for that to happen? We've distributed the documents
+across k computers, we've applied the map
+function just as we did. Now we have a big distributed
+list of word frequencies. And now we've got four computers that
+we're gonna use to count up the words and aggregate the results
+from the previous step. So, what's this actually look like? Let's say parliament is a word that's
+gonna be indicated by this red bar and government is a word indicated
+by the green bar and people is a word indicated
+by the blue bar. And we know that these words
+appear across different documents. So they're all scattered over the cluster. They might appear anywhere. And so what we need is a function
+that will send all occurrences of the red word to one particular computer,
+all occurrences of the green word to one particular computer and all occurrences of
+the blue word to one particular computer. And that function is a hash function that
+derives one of these four computer IDs. Let's say the number zero, one, two, or
+three, from the value of the word itself. Given the value of that red word, I need
+to know exactly where to send it and that's what a hash function
+will provide for you. And it turns out the program doesn't
+have to write this hash function. It's generic enough that you can
+just build that into the system. So each computer that produced the output
+of the map phase may need to send data to all the computers that are going to do
+this final step in the computation. So we have this big n by m
+distributed communication step that sprays the data out to all computers
+that are going to perform the last step. And now, they have enough,
+again, jurisdiction to know for sure that they can just count
+the number of green words and know that there's no more anywhere else,
+on any other computer. And they can just produce the answer. And so we have our distributed
+histogram spread out. Everything happened in parallel, so we
+know can sort of scale out with lots and lot of computers, and we should be happy. And so the point here is that this pattern
+of applying a function to a distributed data set using a hash function
+to spray the data across the network and collate the similar
+values or the identical values. This pattern comes up often
+enough that it's useful to push it down into the system and reduce the programmer's task to just
+writing these two simple functions. A map function to process
+an individual data item and this reduce function that will,
+in this case, count up all the words or do some other combination of
+aggregation combination reduction of a set of values that are associated
+with a particular key, okay. And that Shuffle step,
+the reason I put it in parenthesis here, is that that's something that's
+generic enough that the system can provide it itself,
+you don't even need to think about it. You just need to arrange your
+algorithm such that the Map and Reduce function work in concert to
+produce the answer that you want. And that's the nature of the Map and
+Reduce system, and the Map Reduce programming model. And we'll talk about that in
+a little bit more detail next. [MUSIC]

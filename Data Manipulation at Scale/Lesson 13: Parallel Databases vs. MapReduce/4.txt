@@ -1,0 +1,89 @@
+[MUSIC] So I want to spend a little bit more
+time on the details of MapReduce versus relational databases beyond just
+how the query processing happens. We saw that parallel query
+processing is largely the same. Many of the algorithms
+are shared between and there's a ton of details here that
+I'm not gonna have time to go over. But the takeaway is that
+the basic strategy for performing parallel processing
+is the same between them. But there's other features that
+relational databases have and I've listed some of them here. So we've mentioned declarative
+query languages, and we've mentioned that those start to
+show up in Pig and especially HIVE. Now there's a notion of a schema in
+a relational database that we didn't talk too much about but
+this is a structure on your data that is enforced at the time of data
+being presented to the system. So any data does not conform to
+the schema can be rejected automatically by the database. This is a pretty good idea because
+it helps keep your data clean. It’s not real feasible in many contexts,
+because the data's fundamentally dirty and so saying that you have to clean it up
+before you are allowed to process it, just isn't gonna fly, right? And so this is one of the reasons why
+MapReduce is attractive, is it doesn't require that you enforce a schema before
+you're allowed to work with the data. However, it doesn't mean the schemas
+are a bad idea when they're available. And, in fact, really, even with MapReduce,
+a schema's really there, it's just that it's hidden
+inside the application. So when you read a record, you're assuming that the first element in
+the record is gonna be an integer, and the second record is gonna be a date, and
+the third record is gonna be a string. So that schema's really present. It's just present in your code as opposed
+to pushed down into the system itself. And there's a lot of great, empirical
+evidence over the years that suggest it's better to push it down into the data
+itself when and where possible. And in fact, you're starting to see this. So HIVE and Pig, again,
+have some notion of schema, as does DryadLINQ as does
+some emerging systems. There's a system called Hadapt that
+I won't talk about really at all but combined, sort of, Hadoop level
+query processing for parallelism and then on the individual nodes there's
+a relational database operating. And one of the reasons, among many,
+is to have access to schema constraints. Logical data independence,
+this actually you don't see quite so much, this is the notion of Views right? Does the system support views or not, and
+you haven't seen quite as many instances of Hadoop like systems that support
+views but I predict they'll be coming. Indexing is another one. So we talked about how to make things
+scalable, that one way to do it is to derive these indexes to support sort
+of logarithmic time access to data. That's not available in vanilla MapReduce. Every time you write MapReduce job, you're gonna touch every
+single record on the input. You're not gonna be able to zoom right
+in to a particular record of interest. That's wasteful and it was recognized to
+be wasteful and so one of the solutions. You see people adding indexing features
+to Hadoop and Hbase is an open source implementation of another proposal by
+Google for a system called Big Table. That among other things, provides kind
+of quick access to individual records. And Hbase is designed to be sort
+of compatible with Hadoop, and so now you can design your system
+to get the best of both worlds. Okay, so you can get some indexing along
+with your MapReduce style programming interface. And once again I'll mention
+Hadapt here as well. One of the motivations for Hadapt is to be able to provide
+indexing on the individual nodes. Okay, fine, so
+I'll skip caching materialized views. So this is the same as logical data
+independence except you can actually pre-generate the views as opposed to
+evaluate them all at run time but we're not going into too much about that. And then transactions which
+I'll talk about in a couple of segments in the context of NoSQL. So databases are very good at
+transactions, they were thrown out the window, among other things, in this
+kind of context of MapReduce and NoSQL. And they're starting to come back. But remember, what MapReduce did provide
+was very, very high scalability. So this 1,000 machines and up. And it also provided this
+notion of fault tolerance. So relational databases didn't really
+treat fault tolerance this way. They were unbelievably good at recovery. Because of this notion of transactions, if you were operating on the database and
+everything went kaput. Given some time,
+it would figure everything out and recover, and you can be guaranteed
+to have lost no data, okay? That's fine, but that's not the same
+thing as saying, during query processing, while a single query is running,
+what if something goes wrong? Do I always have to start back
+over from the beginning, or not? And it's sort of the implicit assumption
+with relation of database as well, that you're query's aren't taking long
+enough for that to really matter. But in the era of big data
+of massive data analytics, of course you have query's that
+are running from many, many hours, right? And so, having to restart those and
+of course their running on many, many machines where failures
+are bound to happen. And so that context is something that
+MapReduce sort of really motivated, and now you see modern parallel databases capturing some of those in a fault
+tolerance in general, okay? So, these are a partial list of
+contributions from relational databases, and this is a partial
+list of contributions, maybe a complete list of
+contributions from MapReduce. And my point is that you see a lot
+of mixing and matching going on. The design space is being
+more fully explored. It used to be sort of all about relational
+databases with their choice in the design space, and then MapReduce kinda
+rebooted that a little bit, and now you see kind of a more fluid mix cuz
+people started cherry-picking features. Okay, fine. And then the last one I guess
+I didn't talk about here is, what I think was really, really powerful
+about MapReduce is it turned the army of Java programmers that are out there, into
+distributive systems programmers, right? A mere mortal Java programmer could all of
+a sudden be productive processing hundreds of terabytes without necessarily having to
+learn anything about distributive systems. That was really, really powerful, right? I mean, you had to become a database
+expert to be able to use these things. Okay, and so I think that impact
+is hard to overstate, right? The ability for one person to get work
+done that used to require a team and six months of work was significant. [MUSIC]

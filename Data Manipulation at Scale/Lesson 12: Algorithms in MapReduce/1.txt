@@ -1,0 +1,50 @@
+[MUSIC] So let's look at an example that doesn't
+involve processing a corpus of documents. So let's think about how
+to implement a relational, the join operation that we learned from
+the relational algebra in MapReduce. Okay so here recall that you
+are given two relations and a relation is a set of tuples, all right? And, you're trying to find
+every record in one relation that corresponds to a record
+in the other relation, right? And so
+here we're gonna join on SSN equal to. EmpSSN. And actually it wasn't quite correct for
+me to leave this unspecified. There's a notion of a natural join that
+would matched up if the field names, if the attribute names match,
+but here they don't, and so I need to be explicit about
+what I'm joining on, okay? And so the output here is
+these three records, okay. This record joins with these two,
+and this record joins with this one. Fine, now imagine that both of
+these relations are huge, okay? So the map phase here is going to
+process every tuple in general. And we have a problem right off the bat,
+that Join is a binary operation. It has a two input relations,
+the left relation and the right relation. You're trying to find corresponding tuples
+in one and match that matched the other. But MapReduce is a unary operation. It processes a single data set. So, how can you. To do a first approximation, you can't
+express Join and MapReduce period. But that's okay, there's a bit of
+a trick here, and the trick is look, it's okay that, imagine the data set
+here is just a big jumble of tuples. It doesn't matter what
+table they came from. We just lump them all together into
+a single data set called tuples. And that'll be what we
+process with MapReduce, okay. And so here I'm asking the question,
+what is this for? Well, this is a label that we've
+attached to every tuple so that we can know where that came from. And we'll see how that's used later. Now, I'm not being specific about how or
+where you get this label or how you do it in MapReduce, but I want you
+to think logically that it's necessary. And in practice,
+it's not that difficult, right? Cuz you know for example if you're
+processing, you have distributed files from this directory representing
+all the employee chunks, and you've got distributor files in this
+directory for representing the assigned department's chunks, you can look at
+the file name to tell what table it is. And so in the map function that you write,
+you can determine that ha, this has file name, this has the employee
+relation name in its file path and I'm gonna go ahead and
+attach that as part of the record, okay. And so we could write pseudocode for
+this and, in fact, you might as part of the An upcoming
+assignment, all right. So fine. So what's the map phrase look
+like of this relational join? Well, for every record on the input. You're going to produce a key value pair. We know we have to produce key value
+pairs cuz that's how MapReduce works. So what's the key gonna be? Well, I'm going to give you,
+the key is going to be the join attribute. The attribute that you're joining on. And the value is gonna be,
+sort of everything else, right? The rest of the tuple. And we can actually get away with
+removing this guy to save some space, but typically you wouldn't bother, okay? So fine.
+So given a tuple that looks
+like this with three fields. We produce a key of 77777 and so on. And the value is the entire tuple,
+and so on. And again, notice the tuples from both relations are all lumped
+into the same input, all right. I may be belaboring this, but
+I want to make sure that's clear. Okay, so so far we've done two tricks. One is lump everything together, and two is produce a key value pair
+where the key is the join attribute. [MUSIC]

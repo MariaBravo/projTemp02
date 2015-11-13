@@ -1,0 +1,42 @@
+[MUSIC] So you combine these two
+notions together and you get the definition of
+PageRank as it was published. And there's a couple of variations on
+this, but this is the one to know. So, while not converged, the rank of a vertex A is the sum of all the ranks
+of the vertices that link to A, but each one is divided by
+the total number of outgoing edges. So in this notation, we assume that
+there are edges, B linking to A, C linking to A, D linking to A, and PR(A),
+the PageRank of a vertex X is going to be the page rank of the vertex X, L(X)
+is the number of outgoing links from X. And so, we take the page rank of B and
+divide by the number out outgoing links away from B, take the page rank of C,
+divide by the number of algorithm links away from C and so on, add all that up and
+that's all the contribution to A. And then we multiply by a damping
+factor to make sure that what we pass on diminishes over time as
+we get further and further away. And then this other term in this
+expression is just to ensure that all the ranks sum up to 1 so that we can
+sort of interpret them as probabilities. And in fact, you can directly
+interpret this as a probability, which is another way of looking at
+PageRank and deriving PageRank is to take random walks around the Internet,
+around the graph, right? So you start on a random vertex and
+just start walking. Make a choice at random among the edges,
+the outgoing edges, and just traverse around. Well, if you do this a bunch of times, you
+can derive how likely it is that you'll spend time on some particular vertex
+versus some other particular vertex, and that will exactly be the PageRank. And so this is all roads lead
+back to Wikipedia or CNN or some other very important
+vertex in the web graph. So that's PageRank and what I wanted
+to point out before we move on is just the relative simplicity of this,
+right? It really comes out of an intuitive
+notion of trying to figure out how can we measure the importance
+of a vertex in the graph and so you start with very simple notions of,
+well, maybe important means just the one with the highest number
+of edges that link to it. Well, there's some problems with that so
+let's see if we can fix it. Maybe it's the one with the most number
+of paths that go through it, and we really don't care about all paths, we
+care about shortest paths, so that gives you another notion of importance and you
+say well, that's got some problems too. What are the properties
+we really want here? Well maybe it kind of captures
+the importance of your friends needs to be added in there somehow. And you can sort of walk through this and
+come up with where PageRank came from. So the way it's presented just like a lot
+of these things are presented in terms of a finished formula and then you have to kind of work out,
+reverse engineer where it came from. But a lot of these things
+are developed very intuitively and the formula is only used as a notion to
+express the intuition in a precise way. [MUSIC]

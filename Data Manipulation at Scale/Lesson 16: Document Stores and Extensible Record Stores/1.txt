@@ -1,0 +1,57 @@
+[MUSIC] Okay, so the next system we're gonna
+look at is CouchDB, which began in 2005, but is still getting a lot of updates and
+is still pretty popular today. So this is an example of
+one of these document oriented stores that
+Rick Attell talked about. And so here, just to look at
+the features we're talking about here. We got the scale. We got a primary index. Now we start to see the requirement for
+secondary indexes meaning that you can look up and not just by the key but
+by other kinds of values in the document. And we'll see how that works. Okay. And then transactions also
+are a little bit better. We can, what I mean by record here is that you can change multiple values
+within a single document object, which is a set of key value pairs as
+opposed to just a single key value pair. Okay, and, then there actually is
+some some support for analytics and we'll see how this works, too. This is all through the notion,
+this concept of views in CouchDB. But you can actually little
+MapReduce scripts to compute, derive new values from
+existing document source. And then the other we have here is views,
+which is somewhat unique. And you see this column is
+fairly sparsely populated. And I hit the concept of views pretty
+hard, when we're talking about relational databases and argued that it
+was pretty fundamental to not only the relational model, but
+a pretty important concept in general. It gave you this notion of
+logical data independence. And so whenever you see views,
+that's a good thing. And so CouchDB has them as well. All right. So the data model here is
+document-oriented as we said, where document is a set
+of key/value pairs. And so here in this application, these are perhaps blog posts
+where they have a subject. The key is subject and
+the value is some text string. They have an author and they have a date at which they're posted
+and then they have a set of tags. This is sort of what makes
+it a document model. We said they could be sort of nested, so this is okay to have
+a list of objects here. Then they have a body,
+which is another string. Fine.
+You'll notice that this is actually JSON compliant, we've looked at JSON
+in the Twitter assignment. And so, it's another occurrence of this. And one of the reasons why I wanted to
+make sure you're working with JSON before is it does get popular. And so in CouchDB all data's
+represented in JSON and all the requests coming back are all
+represented in JSON as well. Okay. So how it updates work in this context,
+well, as we mentioned, it is fully transactional
+within a single document. So full consistency within a document
+meaning that I can sort of grab hold of the document and logically sort of lock
+it, and make whatever updates I want. Now it doesn't actually take a lock,
+because it uses what's called a optimistic concurrency control, meaning it sort of assumes that conflicts
+aren't gonna happen, optimistically. And so now if I check out that document
+and try to make updates to it, anywhere I want, all throughout it, and then try
+to commit that change, and someone else has committed their own changes in
+the meantime, my changes will fail. But we assume that that
+doesn't happen that often, so it's okay to just sort
+of fail in those cases. And really which all you have to do in
+that case is check out the new changes and make whatever changes you want. Fine.
+But, there's no multi-row transaction. What I mean by multi-row
+here is multi-document. So you can't say, for example,
+when I update my status, I have to update my document that
+describes my current state of the world. But maybe I also want to
+update all my friends' walls. Right?
+Their pages that reflects my new status. And you can't guarantee that that
+happens synchronously in CouchDB but in this particular application and
+in many others, maybe that's okay. You can do it in two separate steps. You update your status and then you update
+theirs and there will be a period of time where their view of your current status is
+out of date, but maybe that's all right. [MUSIC]

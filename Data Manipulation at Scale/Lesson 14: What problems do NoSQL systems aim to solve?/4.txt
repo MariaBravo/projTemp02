@@ -1,0 +1,75 @@
+[MUSIC] Now, how did databases solve this problem,
+or why do they take so long? Well, there's a protocol called
+two-phase commit that's fairly standard in these situations for
+synchronous processing. And so the motivation for why you want
+to do Two-Phase Commit goes like this. If you wanna have a bunch of replicas or
+other kinds of subordinates, anybody that wants to see the change. You make your status update and
+your friends need to see it, the server is holding those different
+friends need to be told of the change. And so if you just go ahead and tell them,
+say look, I made this change go ahead and update your internal state
+to reflect Sue's new status. Then you can have some of them report
+back success, but one of them could fail. But now you're in trouble, right? Because this one has the old value
+because it failed for some reason. Either you didn't hear back from the
+server at all, or it said look something's wrong with my disk, I can't do it so
+it responds with a failure, regardless. And these two have already successfully
+applied the, I'll put a check mark, have already successfully
+applied the transaction. And so now you're in an inconsistent
+state, subordinate3 has the old value, and these guys have the new values. Okay? So how you solve this
+problem is Two-Phase Commit. So the first phase here is the coordinator
+sends a Prepare to Commit message, and the subordinates make sure they take
+action to make sure that they can commit that transaction when asked,
+no matter what. And so
+typically this means writing to a log the information related
+to the transaction. So that even if the power goes out, when they wake back up they
+can pull it from the log. Okay. And if subordinates reply with
+a yes I'm ready to commit and then in phase two if all the subordinates
+say they're ready then you go ahead and send the commit message. And if anyone failed, if rather instead anyone failed then
+you send back an abort message. And the individuals can clean up. Okay, so this is fine and
+here's a schematic of it. In step one they say prepare,
+these guys all write ahead to the log and say I'm about to write this, or
+I'm going to commit this transaction. They respond with yes, I'm ready to do so. The coordinator comes back with commit and
+then finally all the work is done and I'm not gonna show the schematic for
+what happens in a failure. That essentially the coordinator
+needs to watch out for it and send back an abort if
+something has gone wrong. There's a couple of problems with this. One is there's some dependencies
+on the coordinator here, that if the coordinator fails at the wrong
+time things can go kind of screwy. And a fully distributed protocol for
+insuring mutual committment of transactions, or other
+kinds of operations, can be achieved. One of the most successful and
+popular methods of doing this is an algorithm called Paxos, that we're
+not going to talk about in detail. But you're gonna see that term if
+you look at some of the readings for the new sequel systems. Okay, so think Two-Phase Commit
+on a local cluster for a database, think Paxos for a distributed
+sort of peer-to-peer kind of protocol. And just briefly what Paxos is essentially
+doing is, it's a voting scheme. So people sort of vote on the individual
+servers about to self determine whether or not they're supposed to commit
+the transaction or not. And the details can get
+a little bit subtle. But, overall it's pretty
+simple given the nature, given the difficulty of
+the task that's involved. Okay, so fine, so that's one problem. The other problem is just with
+that Paxos sort of shares is that this can take a while. Right?
+If subordinates don't respond promptly he might be waiting around if things fail
+multiple times you need to abort and retry transactions of the applications
+there, things can go slow. When there is, it doesn't necessarily
+scares when there's thousands or millions of subordinates need to do this
+or you're kind of dead in the water. So other protocols that I'm not gonna
+talk about in too much detail include multi version, but you will see it
+in some of the papers mentioned. Multi-version Concurrency Control where
+each write creates a new version of the data item. And the legality of a read is determined
+by checking the timestamp of the read transaction versus the current timestamp
+of the version that you're trying to read. Okay, and if it's been updated since
+the time you're supposed to be reading it, prior to MVCC all you could do
+is abort the read and say, look, you're looking at dirty data, you're done. But with Multi-version Concurrency Control
+you can actually keep multiple versions around and redirect the read to the, potentially to the prior
+version that is correct. Okay, and thereby avoid
+aborting certain transactions. That mechanism still has
+a dependency on a coordinator role to administer time stamps. A fully distributed scheme,
+where the decision to go forward with a transaction or
+to abort a transaction is made the revoting scheme among peers is Paxos. And Paxos is very successful and
+very widely applied and you'll see it mentioned in some
+of those SQL papers if you take the time to read them and
+they're on the reading list. And so this relieves the dependency
+on having these central coordinator, but is still Synchronous and
+still has the potential for deadlock and can take some amount of time to reach
+consensus depending on what's going on and what kind of failures are happening. And so it's difficult to
+guarantee very high performance or very low latency response times. [MUSIC]

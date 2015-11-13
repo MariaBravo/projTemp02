@@ -1,0 +1,61 @@
+[MUSIC] What happens in the magic shuffle phase? Well, everything with the same
+key gets lumped together, as we talked about, and so
+now you get a reducer invocation, that has one reducer invocation for
+every unique key. So in this case, it'd be one for
+999 and so on, and one for 777 so on. And the list of values
+associated with that key will be all the tuples that
+share the same join key. Now, it doesn't matter what relation they
+came from, they'll all be in this list. So in this case we get one tuple
+from the Employee relation, and we get one tuple from
+the Department relation. And here we get one tuple from
+the Employee relation and we get two tuples from
+the Department relation, right? And so now,
+in the context of a single computer, we have everything we
+need to compute the join. And, further, each one of these reduce invocations
+can be done on a separate machine. Okay. And that's how we scale. So now this reduce function that
+the program would have to write if you're implementing a join phase
+would have to take this key, and take all these tuples,
+and produce the joined tuple, right, where these two
+attributes came from Employee, and these two attributes
+came from Department. And same thing here. Employee. Department. Now, if you wanna think about what kind
+of operation you need to implement in this reduce function, well, you've got
+a set of tuples from one relation and you need to associate it with every
+possible tuple from the other relation, right, because we know they all join, by definition they all join, they all
+have the same key, they all match. So, if you have every members of the set
+paired with every possible member of another set, if you remember,
+that's a cross product operation. And so here again we see relational
+algebra popping up sort of in a different context. Okay.
+So I don’t want to confuse you too much, but the overall operation we're trying
+to do is implement a parallel join. It happens to be that locally, right here
+inside one reduce function, we recognize, aha, that's another relational
+algebra operator cross product, but this is more for abstraction
+purposes than for algorithm purposes. Just wanted to point that out, all right. So again, you put on your
+relational algebra colored glasses, and these operators start to
+pop up everywhere, all right. So fine, so let's do this one more
+time just to make sure it's clear. So I'm giving you two relations,
+Order and LineItem. And they have these fields,
+an orderid, an account, and a date. And here there's an orderid,
+and itemid, and a qty. And we're gonna join on orderid. So what's the map phase look like? Well, once again, the key will be
+the join key, in this case, orderid. And the value will be this pair, the relation name along
+with the original tuple. And before we just sort of lumped
+these together in one tuple, and it doesn't matter very much. Here, I've kind of structured
+it slightly differently, but the point is that all of
+the information is here. The key must be the join key,
+and the value is the tuple, as well as some sort of indicator
+of what relation it came from. In fact, maybe I'll ask real quick, why
+do I need that indicator of the relation? Well, in the reduce phase, I wouldn't be
+able to produce the joined tuples properly if I didn't know which tuples
+went with which relations, if I just had a big bundle of tuples and I
+couldn't really figure it out very easily, that would be a problem. Theoretically, you might be able to avoid
+tagging explicitly with Employee and Department because you could deduce that,
+well, the Employee table was the one that has a string first,
+followed by the join key, and the Department relation has the join
+key followed by some other string. But it's a little dangerous to rely
+on that kind of information cuz you could be joining two tables that
+have exactly the same schema and there wouldn't be a real
+obvious way to figure it out. So an explicit tag is
+a little bit safer here. So that's the map phase. We lump all the records together and
+produce key-value pairs where the key is the join key from
+the corresponding relation, join attribute from
+the corresponding relation, and the value is the entire tuple
+tagged with the relation name. [MUSIC]

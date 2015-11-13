@@ -1,0 +1,51 @@
+[MUSIC] So let me give you one more
+example of a Datalog query. So we want to know who contacted who and
+when they contacted them, but we don't really care how they did. And this is a simple implication of
+something we saw in the previous example. So we say Person1 contacted
+Person2 at time, at some time if Person1 sends an email
+to Person2 at some time. We also say Person1 contacted
+Person2 at some time if Person1 called Person2 at some time. And then finally we say
+Person1 contacted Person2 if they sent a text message at some time. And so the point here is, these would most
+likely come from three very different sources, right, as the government is doing
+whatever they're doing to get the email. Again, whether you agree with this or
+not, that's one company or one source. Another source is who called who. And a third source is who
+sent a text message to who. And so combining all these together
+doesn't necessarily take a lot of work. You can express these in
+these high-level languages. And this is, I would argue, the right way to approach these problems
+as opposed to all available code. So I'll give you one more example. Who could have known before June 3rd
+that some event was going to happen? Maybe you know for
+a fact that someone named Sam knew, so you're starting from that point. Well, who else could have known? Well, using this same trick we use in the, to build up a contacted relation,
+you can do this again. Well, we know Person2
+knew if Person1 knew, and Person1 emailed
+Person2 before June 3rd. And we can also argue that Person2 knew,
+potentially knew, if Person1 knew and
+Person2 met with Person1 before June 3rd. And so the point I want to make here
+is that we've referenced the head, the relation that we're creating new. We referenced it in the body
+of this rule as well. So there's a recursive relationship now,
+right? It starts with Sam, and then basically
+we find all the people that Sam emailed before June 3rd, and they're in the final
+result, and then all the people that those people emailed before June 3rd, and
+they're in the final result, and so on. And you can do this with Met, and
+you can do this with Call and so on. So this recursive relationship,
+this self-reference, is the difference between Datalog and SQL. You actually can express
+this kind of thing in SQL. There is, Microsoft calls them common
+table expressions, and you can use the with clause to do this recursive
+stuff, but you'll find, if you try to do this in practice, that the implementation
+of these features is a little bit poor in many of the commercial databases, and
+it's, there's various limitations. For example, you can only have
+a depth of 100 recursive steps, which is sort of arbitrary and much too
+small for many of these applications. You'll also find the performance
+of these varies widely and is not particularly good. So it doesn't,
+it's not clear that the customers are, relational databases have been
+demand in these features. But I'd argue that increasingly this
+is what people are interested in. And my evidence is examples
+like we just saw from the news, the fact that graph-specific
+database systems are emerging. You know,
+Neo4j is getting very very popular. There's various systems for
+processing graphs on top of MapReduce, and we'll talk about a couple of those and so on, RDF systems, you know,
+these so-called triple doors. The fact that graphs are becoming more and
+more important suggests that this ability to reverse
+the graph recursively is becoming more and more important,
+which motivates perhaps a move from SQL relational algebra languages to this
+Datalog relational algebra language. And so I, my prediction is that you're
+going to see Datalog pop up more and more often in industry. [MUSIC]

@@ -1,0 +1,71 @@
+[MUSIC] So we talked about the relational
+algebra operators themselves. Let's get a little bit of
+experience translating from SQL to relational algebra,
+at least in our heads. So let's see some examples
+of how to do this. So assume this schema with three tables. Product, purchase, and customer. We did not talk about that in this class,
+but the underline here means that
+that's a primary key, and so every unique value of pid defines
+a unique people and product. Every unique value of the combination of
+pid and cid defines a unique purchase. And every unique value of cid
+defines a unique customer, okay. Fine, what's the relational algebra
+expression that corresponds to this query? So the first thing you want to look for
+is, the first thing I like to look for is the from clause. I like to see what tables are involved. Well this has all three tables involved. And whenever I see multiple tables
+on the from clause, or you know, involved in the query,
+I'm thinking joins, okay? So even if the condition is
+not immediately obvious or you haven't looked at, you haven't
+sort of analyzed the where clause yet, just think that they're going to be joins. In fact, typically if you don't find
+a join condition linking say x and y down below it usually means
+there's a bug in the query. That would correspond to a cross product,
+and it's not too common that you want that. So where are the join conditions, well, here's the one that links x and
+y, they join on pid equals pid. That's a pretty common case. To link the sort of keys and
+foreign keys that way. And here's the condition that links,
+oh, that's a bug too. This should be z. All right, here's the condition that
+links purchases with customers. Okay, and
+then there's some extra conditions here. That are not join conditions. So why aren't they join conditions? Well they only involve columns
+from one table not from both. So the price has to be greater than
+100 and the city has to equal Seattle. So what does this SQL
+statement do in English? It says find me and the key that we
+see the keyword distinct here too, so find the unique pairs of products and
+customer products purchased by customers in the city of Seattle
+where the price is greater than 100. All right, so
+the relational algebra expression of this, we saw that there were two joins. There's three tables, a join is a binary
+operator, means that there's two inputs, so we know there's going to be two joins. So first we join, I say first. In this particular plan,
+first we join product and purchase on this condition pid equals pid. And, then we join in customer,
+where cid equals cid. And then we apply a selection condition,
+price greater than 100 and city equals Seattle. And that's perfectly legal. And then we use the projection
+operator to get the tables we want, and then finally there's a funny
+operator here we didn't talk about which is the duplicate elimination operator. And that explicitly removes duplicates,
+and that corresponds to that distinct keyword. So here's this tree-based relational
+review of the same query. Now, we talked a little bit last time
+about optimizing queries algebraically. So think for a second about whether
+there's a faster way to do this. Is this the fastest plan? And I guess I'm sort of leading
+you that there probably isn't. But think about how you
+might make this one faster. So what is the cost depend on? Well the cost in general the cost depends
+on the size of the intermediate results. You want fewer tuples
+flowing through this plan. Okay? And here the selection operator every time
+we see it we know that it's gonna reduce the number of tuples or keep it the same
+but it's going to, it applies a filter. Almost always,
+we wanna do those as early as possible. Finding only those products
+were prices greater than 100 down here would be a reasonable idea. And further, finding the purchases
+that are only in the city of Seattle, which were these customers I guess? Let me go back and check. Yeah, z.city, so it's an attribute
+on the customer relation. Excuse me. Prices equals 100. City equals Seattle. Would be better. And then we could get rid of this. All right.
+And so we talked about pushing selects,
+and that's the most basic, the most common algebraic transformation
+you might do on a relational algebra plan. If this was a,
+if you were using databases in practice, you didn't care about sort of
+understanding the internals. And this wasn't a data science
+course where you're going to move on beyond databases after that,
+this actually wouldn't be that important. And the reason is because databases take
+care of this kind of thing automatically. You just write the query, it's gonna figure out that
+it can push the [INAUDIBLE]. The reason I wanna bring this up is for
+both those reasons. One, I want you to understand
+what's going on inside a database. But also you're gonna see as we get away
+from this decorative query language and algebraic optimization kind of
+framework that databases offer you have to worry about these
+things manually once again. Okay? And recognizing when there's
+an opportunity to, sort of, push these filters up stream is important. And, the relation algebra gives
+you the kind of language and formalism to sort of reason
+about these problems. Even when you're not
+talking about a database. All right. And, that's what this slide shows,
+I sort of drew it by hand in the. With the pen, but
+what we did was we pushed the select down. And this is what it looks like. [MUSIC]

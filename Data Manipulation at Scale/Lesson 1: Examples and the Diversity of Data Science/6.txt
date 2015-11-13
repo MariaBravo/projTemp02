@@ -1,0 +1,46 @@
+[MUSIC] So another example also
+analyzing web search traffic that was done with perhaps a little
+bit more of a scientific rigor, was done by some folks
+at Microsoft Research. And so here what you're looking for is, Side affects associated
+with particular drugs. So these results are pretty striking. So what this graph is showing
+that is over time a set of users, it was around about a million, they had permission to sort of
+monitor their web search traffic. That when you searched for
+this drug in green, what percentage of the time did you also search for terms
+associated with hyperglycemia symptoms? And the answer is somewhere around 5% for this other drug it was
+somewhere around 4%. In the background for the average
+case it was pretty close to 0%. If you search for both of these drugs,
+the odds that you also search for hypoglycemia symptoms went up to 10% okay. So what's striking about
+this is that hyperglycemia is not a known side effect of these drugs. But it seems impossible to ignore,
+from the web search data right? There's just no reason to believe that
+this could be explained by a coincidence. And they develop this argument more
+in the paper than I just have there. But, so fine, so
+repurposing data, this is another example of large centers and
+they had to use a web search. And those are probably the two
+points I wanna make about that, but a pretty fun one. Okay, so the last example I'll
+give is a different take, there's more about prediction than data. But this, from last October If you recall, there were six Italian seismologists
+who were convicted of manslaughter for failing to predict a magnitude
+6.3 earthquake in 2009. And so while the locals were
+concerned about the seismic activity, the researchers were deemed to be just
+too reassuring about the verdict. And so the point I want to make
+here is that there's liability the scientific community was complete
+aghast that this happened and I'm complete aghast that this happened and
+pretty much everybody is. That you can imagine to hold
+researchers responsible for failing to predict something that is demonstrably and
+known to be impossible to predict right? So there's no seismologist on the planet
+that would argue that earthquakes are even remotely predictable and yet
+the courts sort of decided that somehow they, because they got the wrong answer,
+it's bad. But it does sort of bring up the issue
+that when you make a prediction, there's a certain amount of weight
+you're gonna put behind it whether intentionally or not. And so understanding how confident
+you are about that prediction is sort of an important part
+of the game here, okay? So that was the last example. The themes that we saw come out here, we gave a couple of example
+of graph analytics. We showed that databases are sort of
+useful in the Obama grounding case. Saw a lot of examples of visualization and
+communicating your results, interpreting your results. We saw some examples of using very large
+data sets other examples that use very small data sets. And not everything's about big data. A couple of bullets that are not here. We talked about ad hoc interactive analysis it's sort of not just faster,
+but different. And so supporting that is important and
+then we talked about repurposing data. So data collected,
+perhaps by someone else, for some other purpose, using that to
+draw inferences about something else. That's a pretty common theme here. In the next couple of segments we'll talk
+about how we organize this course, and some of the designs decisions that
+we made in creating the material. [MUSIC]

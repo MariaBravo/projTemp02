@@ -1,0 +1,45 @@
+[MUSIC] Allright, so
+this notion of views works like this, a view specification which is
+itself a CouchDB document, a set of key value pairs, but
+it's a special one, looks like this. There's just some metadata
+information here, and then there's this key views
+which is a dictionary of things. And so this specification has
+three views in it, one called all, one called by lastname, and
+one called total purchases. And each one of these views is
+implementing a set of key value pairs. All right,
+it's gonna be implementing a dictionary. And so, the all view. Okay, so fine. So, how are these implemented? Well, speaking of recurring concepts, views are recurring from logical data
+within these relational databases. And here MapReduce is recurring even
+outside of the context of literally hey dupe. Okay, and so here the map function, reduce function are actually
+written in JavaScript. Again, everything has to use
+JavaScript and they look like this. So, the all view has just a map function,
+no reduce function. And in JavaScript you can write
+these anonymous functions, like in this sort of syntax. So this function doesn't have a name. It just says hey, I've got a function with
+no name with a single argument called doc, and the body looks like this. It says if (doc.Type=='customer')
+then emit a key value pair, where the key is null and
+the value is doc, so we don't really care about the key in
+this case, we just care about the doc. So this is all customers. Fine. The by lastname view, you can imagine, the
+key is gonna be last name in this case. And so here we have another anonymous
+function, if (doc.Type=='customer') then emit the last name,
+followed by the entire document. This allows clients to search
+efficiently by last name, and these rules are in CouchDB computed. Materialized sort of eagerly. and stored in these distributed index
+structures to support various lookups. And so this is how they implement those
+secondary indexes in that column in our table. So now we can look up by last name,
+as well as by document ID. And so you can even go a little further. You don't have to just do
+simple key value pairs. You can rven do a little
+bit of computation. So total purchases here, the map
+function again takes in a document. And it says,
+well if doc.type equals purchase. So I'm not talking about
+customers anymore, just purchases, then emit the key of doc.Customer and
+the value doc.Amount. Then we're also gonna
+find the reduce function, and the reduce function adds up
+all the values of the amounts. And so here we have, given a customer,
+if I give you a customer, you can return, it's the total
+amount of all of its purchases. Okay, and
+CouchDB maintains all these views as things change,
+with eventual consistency semantics. And so we have a lot of things
+going on here with one concept. We have secondary indexes,
+we have logical data independence. We have MapReduce computation. Now I pause there for a second, because
+I just realized I sort of misspoke, I'm no longer happy with the way I did
+this in this table, right, so I said joins analytics, and I said yes MapReduce style,
+but that's actually not quite true, right? You can do MapReduce but
+you can't do joins. [MUSIC]

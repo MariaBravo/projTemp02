@@ -1,0 +1,43 @@
+[MUSIC] So how does this system work? Well, the programmer's going to enter
+a Pig Latin program by writing these commands. And assigning the results to variables,
+and then you can refer to
+the variables in future commands. So this is,
+we've loaded data into this variable A. We've loaded into the variable B. And then you can filter by reference to
+A and the sort of resiliency and so on. And then, I'll make this point again
+later, but nothing actually happens. No work is actually done until you try
+to actually write out the results. It's what we sort of call
+lazy evaluation all right. So what happens when
+you right this program? Well, the Pig parser will turn
+the syntax of the program into an abstract representation of the program,
+code, and execution plan. And so this is using parlance from
+databases and the lead of the big project is a great database
+guy named Chris Olsen, okay. So this abstract
+representation of the plan. These operators, these operations
+that I'm gonna call operators, again using database parlance,
+are sort of one-to-one with the commands, although they need not always be. Okay, but we're not done there,
+that's just the execution plan, it's still sort of abstract,
+we can't actually execute that. What we need to do is compile
+that down into MapReduce jobs. And the gain here is going to sort of be
+to minimize the number of MapReduce jobs you need, because there's a lot of
+overhead to execute one of these. So you don't want to run a whole
+MapReduce job just to filter a data set. You might as well lump that in with
+other work that you're already doing. As long as you're scanning the data and
+reading off the disk, you might as well do as
+much as you can with it. And so for example,
+in this case, this program, can all be implemented as just
+one single MapReduce job. One, in the map phase,
+you load the data, you filter it. And you also load the other data set. In the reduce phase you do the join. Okay and we'll see another example
+of this a little later on. And then finally the MapReduce jobs are
+scheduled on a Hadoop cluster as usual and run as usual okay. These performance results
+are a little funny but I sorta like the argument that you made. This is Pig Performance vs Map-Reduce. Okay, so this is a little funny because
+Pig is built on top of map-reduce, but the point is the first version
+of Pig in September 11th, 2008 was a lot slower than just writing
+the thing raw against map-reduce. But with some various improvements
+it got better and better over time until eventually it was just as fast
+as the hand written map-reduce. And I think you see this sort
+of pattern quite a bit that there is a cost to abstraction but
+that you typically can recover a lot of the performance of the
+hand coded stuff meanwhile having gained some measure of programmer productivity by
+offering a higher level interface okay. And so I just like the fact that they
+actually just bothered telling the story. Admitting that they were quite slow in the
+beginning and they got faster over time. [MUSIC]

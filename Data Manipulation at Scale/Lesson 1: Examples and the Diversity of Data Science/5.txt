@@ -1,0 +1,57 @@
+[MUSIC] What is not amenable to data science? Well, you might think food. And this is a paper in a fairly
+respectable journal that applies some data techniques to
+analyzing food pairing, okay. And so what they did here is
+pretty interesting right? So, induce a graph on
+the ingredients by saying that if two ingredients appear together in
+a recipe, you draw an edge between them. The graph meaning vertices and edges. And if you're not familiar with graphs,
+you will be by the end of the course, but bear with me right now. So connect two ingredients if they
+appear together in some recipe, okay. Build that big graph and now you can analyze it in ways that
+are similar to what we just talked about. If you can look at
+the community structure, you can find the clusters
+within this graph, and see if these clusters correspond
+to some of the well-known methods of food pairings. Okay?
+And in some cases they do and in some cases they don't, and the author
+sort of show that they've uncovered things that were not necessarily know, but
+appear to be there in the data. Right? And so this data driven approach,
+the fact that there's websites full of recipes online has allowed us to put
+things on a more quantitative basis, that were previously simply,
+old wives tales essentially. Okay.
+So I thought that was kind of a fun example of
+an unusual use of data science. And again a respectable journal. All right. So another example from the Last FM blog, they looked at the tags associated
+with the songs on Last FM, and you should do some simple analysis of
+the emergence of genres over time. But based on the popularity of the tags or
+songs coming from that time. And so you see things like well,
+post punk in red here, came after punk in purple, which you'd
+hope the graph shows that you'd expect. You'd also see some,
+kind of a rise here in, Rock and roll over time, and
+then maybe a bit of a dip more recently. And so this is kind of interesting. But the other theme here we have is,
+that we mentioned in the previous segment, is repurposing data, right? So this data was collected simply to help
+with search, find similar music, and it's now being reused to sort of draw
+inferences about the emergence of entire genres, okay? So another here that you may be familiar
+with, Google was able to show that by analyzing the search logs,
+the frequency of search terms, It could do a better job
+predicting the severity and the scope of flu outbreaks then
+the Center for Disease Control. And by better here we mean
+essentially earlier, right. I was able to give more of a head start to the health community. Okay, and
+also it was sort of more accurate. So how do they do this? Well, when you're getting the flu,
+turns out that you want to search for flu symptoms, terms associated
+with flu symptoms more often. And by watching that uptick, you can predict that there's
+a deadly flu outbreak is coming. Okay? So that's great, and this worked and
+they sort of publish a paper about it, and then they put up this
+interactive visualization for a lot of people to sort of analyze
+the flu outbreak going forward. But just this year, you know, some folks showed that It didn't do
+a very good job in this last year. So scientific hindsight shows
+that the Google flu trends far overstated this year's flu season. And the reason that they
+think explains this, is that there was lots of media attention
+associated with this year's flu season, because it was a bit of an up tick,
+and so It got amplified, and so this caused people to search for
+flu related terms more often. Perhaps because they're worried
+about experiencing the symptoms, perhaps, because they are to
+understand more about the flu outbreak. Perhaps, because they're searching for
+articles. Perhaps, because they're
+worried about their kids more. But it was a second order effect based on
+the immediate attention on the problem which led to skewed results and
+ultimately a wrong answer. And so the point here is, this is great
+that they're repurposing data from the search engine to try to make
+predictions about something else, but it's biased data and so you have to be
+careful with what you conclude from it. Okay, so there are limits here.
